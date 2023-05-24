@@ -7,6 +7,6 @@ namespace Foodie.Data
     {
         public ApiDbContext() { }
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) { }
-        public DbSet<Food> Foods { get; set; }
+        public DbSet<Food> foods { get; set; }
     }
 }

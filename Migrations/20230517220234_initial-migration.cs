@@ -15,17 +15,17 @@ namespace Foodie.Migrations
                 name: "foods",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Kcal = table.Column<int>(type: "integer", nullable: false),
-                    Protein = table.Column<float>(type: "real", nullable: false),
-                    Fat = table.Column<float>(type: "real", nullable: false),
-                    Carbs = table.Column<float>(type: "real", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: true),
+                    kcal = table.Column<int>(type: "integer", nullable: false),
+                    protein = table.Column<float>(type: "real", nullable: false),
+                    fat = table.Column<float>(type: "real", nullable: false),
+                    carbs = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Foods", x => x.Id);
+                    table.PrimaryKey("PK_foods", x => x.id);
                 });
         }
 
@@ -33,7 +33,7 @@ namespace Foodie.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Foods");
+                name: "foods");
         }
     }
 }

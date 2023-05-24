@@ -23,30 +23,30 @@ namespace Foodie.Migrations
 
             modelBuilder.Entity("Foodie.Models.Food", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Carbs")
+                    b.Property<float>("carbs")
                         .HasColumnType("real");
 
-                    b.Property<float>("Fat")
+                    b.Property<float>("fat")
                         .HasColumnType("real");
 
-                    b.Property<int>("Kcal")
+                    b.Property<int>("kcal")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("name")
                         .HasColumnType("text");
 
-                    b.Property<float>("Protein")
+                    b.Property<float>("protein")
                         .HasColumnType("real");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.ToTable("Foods");
+                    b.ToTable("foods");
                 });
 #pragma warning restore 612, 618
         }
