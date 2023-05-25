@@ -4,15 +4,15 @@ export class AddMeal extends Component {
     static displayName = AddMeal.name;
     constructor(props) {
         super(props);
-        this.state = { foods: [], loading: false, meal: [], searchVar: '' };          
+        this.state = { foods: [], foodsAll: [],loading: false, meal: [], searchVar: '' };          
     }
     componentDidMount() {
         this.getFoods();
     }
 
-    handleClick(id) {
+    handleClick(food) {
         let prevMeal = this.state.meal;
-        this.setState({ meal: [...prevMeal, this.state.foods[id]] });
+        this.setState({ meal: [...prevMeal, food ]});
     }
 
     renderFoodsTable(foods) {
@@ -21,6 +21,7 @@ export class AddMeal extends Component {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>ID</th>
                         <th>Add to meal</th>
                     </tr>
                 </thead>
@@ -28,8 +29,9 @@ export class AddMeal extends Component {
                     {foods.map(food => (
                         <tr key={food.name}>
                             <td>{food.name}</td>
+                            <td>{food.id}</td>
                             <td>
-                                <button onClick={() => this.handleClick(food.id)}>Add</button>
+                                <button onClick={() => this.handleClick(food)}>Add</button>
                             </td>
                         </tr>
                     ))}
@@ -46,12 +48,14 @@ export class AddMeal extends Component {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Id</th>
                         <th>Kcal</th>
                     </tr>
                 </thead>
                 <tbody>
                     {meal.map(food => <tr key={food.name}>
                         <td>{food.name}</td>
+                        <td>{food.id}</td>
                         <td>{food.kcal}</td>
                     </tr>
                     )}
@@ -91,7 +95,7 @@ export class AddMeal extends Component {
     async getFoods() {
         const response = await fetch('foods/all');
         const data = await response.json();
-        this.setState({ foods: data, loading: false });
+        this.setState({ foods: data, foodsAll: data, loading: false });
     }
 
     async getSpecFoods(value) {

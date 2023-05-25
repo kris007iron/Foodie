@@ -41,12 +41,7 @@ namespace Foodie.Controllers
                 return await context.foods.ToListAsync();
             }
         }
-        [HttpGet(Name = "GetSpecIDFood"), Route("getOne")]
-        public async Task<Food> GetId(int id)
-        {            
-            return await _context.foods.FindAsync(id);
-        }
-
+         
         public static List<Food> GetClosestFoods(List<Food> foods, string searchValue, double topPercentage)
         {
             List<FoodDistance> distances = new List<FoodDistance>();
