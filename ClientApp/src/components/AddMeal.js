@@ -16,20 +16,39 @@ export class AddMeal extends Component {
         this.setState({ meal: [...prevMeal, food] });        
     }
 
+    handleInputChange = (event) => {
+        const newSearchVar = event.target.value;
+        this.setState({ searchVar: newSearchVar });
+
+        if (newSearchVar.trim() === '') {
+            this.setState({ foods: [], loading: true });
+        } else {
+            this.getSpecFoods(newSearchVar);
+        }
+    };
+
     renderFoodsTable(foods) {
         if (foods.length > 10) {
             foods = foods.slice(0, 10);
-        }        
+        }
+        const { searchVar } = this.state; // Add searchVar to component state
+
+        // Check if search bar is empty, if yes, hide the list
+        if (searchVar.trim() === '') {
+            return null;
+        }
+
         return (
-            <ul className="list-group">                             
-                    {foods.map(food => (
-                        <li className="list-group-item" key={food.id}>
-                            <button onClick={() => this.handleClick(food)}>{food.name}</button>                                                        
-                        </li>
-                    ))}                
+            <ul className="list-group">
+                {foods.map((food) => (
+                    <li className="list-group-item" key={food.id}>
+                        <button onClick={() => this.handleClick(food)}>{food.name}</button>
+                    </li>
+                ))}
             </ul>
         );
     }
+
 
     renderMealTable(meal) {
         let totalKcal = 0;
@@ -117,13 +136,12 @@ export class AddMeal extends Component {
         this.setState({ meal: updatedMeal });
     }
     
-    render() {
-        
-        let contents = this.state.loading ? (
-            <p>                
-            </p>
+    render() {        
+        const { foods, loading } = this.state; // Destructure state variables
+        let contents = loading ? (
+            <p>Loading...</p>
         ) : (
-            this.renderFoodsTable(this.state.foods)
+            this.renderFoodsTable(foods)
         );
         let meal = <p><em>Meal is empty</em></p>;
         if (this.state.meal.length >= 1) {
@@ -131,13 +149,18 @@ export class AddMeal extends Component {
         }
 
         return (
-            <div>       
+            <div>
                 {meal}
                 <div>
-                    <input className="form-control" type="text" placeholder="Search..." onChange={event => { if (event.target.value === "") { this.setState({ loading: true }); } else { this.getSpecFoods(event.target.value); } }} />
+                    <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Search..."
+                        onChange={this.handleInputChange} // Update the event handler
+                    />
                     {contents}
-                </div>                
-                <p>This component demonstrates fetching data from the server.</p>                
+                </div>
+                <p>This component demonstrates fetching data from the server.</p>
             </div>
         );
     }
