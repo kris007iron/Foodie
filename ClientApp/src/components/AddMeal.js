@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
-import '../custom.css'
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import '../custom.css';
 
 export class AddMeal extends Component {
     static displayName = AddMeal.name;
@@ -101,10 +102,17 @@ export class AddMeal extends Component {
         });
 
         return (
+            <>
+            <p>Calories in different macros</p>
+            <ProgressBar>
+                <ProgressBar striped variant="success" now={totalProtein * 400 / totalKcal} key={1} />
+                    <ProgressBar variant="warning" now={totalFat * 900 / totalKcal} key={2} />
+                    <ProgressBar striped variant="danger" now={totalCarbs * 400 / totalKcal} key={3} />
+            </ProgressBar>
             <table className="table table-striped" aria-labelledby="tableLabel">
                 <thead>
                     <tr>
-                        <th>Name</th>                        
+                        <th>Name</th>
                         <th>Weight(g)</th>
                         <th>Kcal</th>
                         <th>Protein</th>
@@ -126,7 +134,7 @@ export class AddMeal extends Component {
                         <td></td>
                     </tr>
                 </tfoot>
-            </table>
+            </table></>
         );
     }
 
@@ -139,7 +147,7 @@ export class AddMeal extends Component {
     render() {        
         const { foods, loading } = this.state; // Destructure state variables
         let contents = loading ? (
-            <p>Loading...</p>
+            <p></p>
         ) : (
             this.renderFoodsTable(foods)
         );
@@ -176,5 +184,4 @@ export class AddMeal extends Component {
         const data = await response.json();
         this.setState({ foods: data, loading: false });
     }
-
 }
