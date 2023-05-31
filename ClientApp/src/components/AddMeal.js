@@ -6,7 +6,7 @@ export class AddMeal extends Component {
     static displayName = AddMeal.name;
     constructor(props) {
         super(props);
-        this.state = { foods: [], foodsAll: [], loading: false, meal: [], searchVar: '', weights: {} };          
+        this.state = { foods: [], foodsAll: [], loading: false, meal: [], searchVar: '', weights: {}, kcalGoal: 0};          
     }
     componentDidMount() {
         this.getFoods();
@@ -99,15 +99,26 @@ export class AddMeal extends Component {
                     </td>
                 </tr>
             );
-        });
-
+        });   
+        let bar = '';
+        if (totalKcal > this.state.kcalGoal) {
+            bar = (
+                <ProgressBar>
+                    <ProgressBar variant="success" now={this.state.kcalGoal / totalKcal * 100} key={1}/>
+                    <ProgressBar striped variant="danger" now={(1.0 - this.state.kcalGoal / totalKcal) * 100} key={2} animated/>
+                </ProgressBar>
+            );
+        } else {
+            bar = (<ProgressBar variant="success" now={totalKcal / this.state.kcalGoal * 100} />);
+        }
         return (
-            <>
+            <>     
+                {bar}
             <p>Calories in different macros</p>
             <ProgressBar>
                 <ProgressBar striped variant="success" now={totalProtein * 400 / totalKcal} key={1} />
-                    <ProgressBar variant="warning" now={totalFat * 900 / totalKcal} key={2} />
-                    <ProgressBar striped variant="danger" now={totalCarbs * 400 / totalKcal} key={3} />
+                <ProgressBar variant="warning" now={totalFat * 900 / totalKcal} key={2} />
+                <ProgressBar striped variant="danger" now={totalCarbs * 400 / totalKcal} key={3} />
             </ProgressBar>
             <table className="table table-striped" aria-labelledby="tableLabel">
                 <thead>
@@ -143,8 +154,15 @@ export class AddMeal extends Component {
         const updatedMeal = this.state.meal.filter(food => food.id !== id);
         this.setState({ meal: updatedMeal });
     }
-    
-    render() {        
+
+
+    render() {  
+        const handleKcalChange = event => {
+            const kcals = event.target.value;
+            // Update the goal entry with the new kcal
+            this.setState({ kcalGoal: kcals });
+            this.forceUpdate(); // Re-render the component to update the kcal summary
+        };        
         const { foods, loading } = this.state; // Destructure state variables
         let contents = loading ? (
             <p></p>
@@ -158,6 +176,7 @@ export class AddMeal extends Component {
 
         return (
             <div>
+                <input type="number" placeholder="0" value={this.state.kcalGoal} onChange={handleKcalChange} />
                 {meal}
                 <div>
                     <input
